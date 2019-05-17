@@ -1,0 +1,19 @@
+@import '~loaders.css/src/animations/ball-scale-multiple';
+@import 'settings';
+
+body {
+  font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 100%;
+}
+
+.loading-wrapper {
+  align-items: center;
+  display: flex;
+  height: 5rem;
+  justify-content: center;
+  width: 5rem;
+
+  // These two classes are required by react-loaders
+  .loader-hidden { display: none; }
+  .loader-active { display: block; }
+}
