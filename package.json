@@ -10,7 +10,7 @@
     "preinstall": "node tools/nodeVersionCheck.js",
     "start-message": "babel-node tools/startMessage.js",
     "prestart": "npm-run-all --parallel start-message remove-dist",
-    "start": "npm-run-all --parallel open:src lint",
+    "start": "npm-run-all --parallel open:src",
     "start:server": "node server/build/server.js",
     "ssr": "npm run clean-ssr && npm run build:client && npm run build:server && npm run start:server",
     "heroku-postbuild": "npm run build:client && npm run build:server",
@@ -27,6 +27,7 @@
     "build:server": "babel-node server/scripts/buildServer.js",
     "build:client": "babel-node server/scripts/buildClient.js",
     "test": "jest",
+    "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
     "test:cover": "npm run test -- --coverage",
     "test:watch": "npm run test -- --watch",
     "deploy": "npm run build && babel-node tools/deployS3",
@@ -36,6 +37,9 @@
   "license": "MIT",
   "dependencies": {
     "@material-ui/core": "3.9.3",
+    "eslint-import-resolver-webpack": "0.11.1",
+    "formik": "1.5.7",
+    "formik-material-ui": "0.0.16",
     "history": "4.7.2",
     "humps": "2.0.1",
     "immutable": "3.8.2",
@@ -55,12 +59,11 @@
     "react-router-dom": "4.3.1",
     "react-router-redux": "5.0.0-alpha.9",
     "redux": "4.0.0",
-    "redux-form": "7.4.2",
     "redux-immutable": "4.0.0",
     "redux-logger": "3.0.6",
     "redux-react-session": "2.5.0",
     "redux-thunk": "2.3.0",
-    "validate.js": "0.11.1"
+    "yup": "0.27.0"
   },
   "devDependencies": {
     "assets-webpack-plugin": "3.9.5",
@@ -83,7 +86,6 @@
     "compression-webpack-plugin": "1.1.11",
     "connect-history-api-fallback": "1.5.0",
     "css-loader": "1.0.0",
-    "dotenv": "6.0.0",
     "dotenv-webpack": "1.5.7",
     "enzyme": "3.4.1",
     "enzyme-adapter-react-16": "1.5.0",

@@ -9,12 +9,10 @@ export default {
   'login.forgot_password': 'Forgot your password?',
 
   'signup.title': 'SIGN UP',
-  'signup.signin': 'Sign in',
+  'signup.signin': 'Already have an account? Sign in',
   'signup.form.passconfirmation': 'Password confirmation',
 
   'logout.button': 'LOGOUT',
-
-  'home.welcome': 'Welcome to React Redux Base',
 
   // errors
   'email.presence': 'You must enter an email to continue',
