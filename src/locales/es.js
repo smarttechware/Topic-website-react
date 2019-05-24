@@ -1,6 +1,6 @@
 export default {
   'login.title': 'INICIAR SESIÓN',
-  'login.signup': 'Registrarse',
+  'login.signup': 'No tienes una cuenta? Registrate',
 
   'login.form.email': 'Email',
   'login.form.password': 'Contraseña',

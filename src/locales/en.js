@@ -1,6 +1,6 @@
 export default {
   'login.title': 'LOGIN',
-  'login.signup': 'Sign up',
+  'login.signup': 'Don\'t have an account? Sign up',
 
   'login.form.email': 'Email',
   'login.form.password': 'Password',
