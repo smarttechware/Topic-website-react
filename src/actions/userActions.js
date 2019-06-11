@@ -6,4 +6,4 @@ export const signUp = user =>
   () =>
     sessionApi.signUp({ user }).then((user) => {
       sessionService.saveUser(user);
-    }).catch((err) => { throw err });
+    }).catch((err) => { throw err; });

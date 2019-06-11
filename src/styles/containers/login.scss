@@ -1,6 +1,6 @@
 @import "./../components/common/colors.scss";
 
-.signupPage {
+.loginPage {
   -webkit-animation: fadein 1.5s;
   display: block; // Fix IE 11 issue.
   margin-left: auto;
@@ -41,13 +41,13 @@
 }
 
 @media screen and (max-width: 540px) {
-  .signupPage {
+  .loginPage {
     width: 85vw;
   }
 }
 
 @media screen and (min-width: 540px) and (max-width: 780px) {
-  .signupPage {
+  .loginPage {
     width: 60vw;
   }
 }

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { func } from 'prop-types';
 import { Formik, Form, Field } from 'formik';
-import SignUpSchema from 'utils/constraints.js';
+import { SignUpSchema } from 'utils/constraints';
 import { TextField } from 'formik-material-ui';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
@@ -34,9 +34,13 @@ class SignUpForm extends PureComponent {
   }
 
   async submitForm(values, actions) {
-    try { await this.props.handleSubmit(values) }
-    catch(err) { actions.setFieldError('general', err.errors.fullMessages[0]) }
-    finally { actions.setSubmitting(false) }
+    try {
+      await this.props.handleSubmit(values);
+    } catch (err) {
+      actions.setFieldError('general', err.errors[0]);
+    } finally {
+      actions.setSubmitting(false);
+    }
   }
 
   render() {
@@ -48,7 +52,7 @@ class SignUpForm extends PureComponent {
           initialValues={{ email: '', password: '', passwordConfirmation: '' }}
           onSubmit={this.submitForm}
           validationSchema={SignUpSchema}
-          render={ formProps => (
+          render={formProps => (
             <Form>
               <p className="signupForm__message">{formProps.errors.general}</p>
               <FormControl margin="normal" fullWidth>
@@ -56,7 +60,7 @@ class SignUpForm extends PureComponent {
                   type="text"
                   name="email"
                   component={TextField}
-                  className='signupForm__input'
+                  className="signupForm__input"
                   label={intl.formatMessage(messages.email)}
                 />
               </FormControl>
@@ -66,7 +70,7 @@ class SignUpForm extends PureComponent {
                   type="password"
                   name="password"
                   component={TextField}
-                  className='signupForm__input'
+                  className="signupForm__input"
                   label={intl.formatMessage(messages.password)}
                   fullWidth
                 />
@@ -77,7 +81,7 @@ class SignUpForm extends PureComponent {
                   type="password"
                   name="passwordConfirmation"
                   component={TextField}
-                  className='signupForm__input'
+                  className="signupForm__input"
                   label={intl.formatMessage(messages.passConfirmation)}
                   fullWidth
                 />
@@ -87,7 +91,7 @@ class SignUpForm extends PureComponent {
                 type="submit"
                 fullWidth
                 variant="contained"
-                className='signupForm__button'
+                className="signupForm__button"
                 disabled={formProps.isSubmitting}
               >
                 <FormattedMessage id="login.form.submit" />
@@ -95,8 +99,8 @@ class SignUpForm extends PureComponent {
 
               {formProps.isSubmitting && <Loading />}
             </Form>
-           )
-         }
+          )
+          }
         />
       </div>
     );

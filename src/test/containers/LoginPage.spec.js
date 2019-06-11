@@ -5,25 +5,23 @@ import { Field } from 'formik';
 import { sessionService } from 'redux-react-session';
 
 import configureStore from 'store/configureStore';
-import SignUpPage from 'containers/SignUpPage';
+import LoginPage from 'containers/LoginPage';
 import { withStore } from 'utils/testHelpers';
 
-describe('<SignUpPage />', () => {
+describe('<LoginPage />', () => {
   let store;
   let subject;
   let form;
-  let email;
+  let username;
   let password;
-  let passwordConfirmation;
   let userResponse;
 
   beforeEach(() => {
     store = configureStore();
-    subject = mount(withStore(<SignUpPage />, store));
+    subject = mount(withStore(<LoginPage />, store));
     form = subject.find('form');
-    email = subject.find('input').at(0);
+    username = subject.find('input').at(0);
     password = subject.find('input').at(1);
-    passwordConfirmation = subject.find('input').at(2);
 
     sessionService.saveUser = jest.fn(() => Promise.resolve());
     sessionService.saveSession = jest.fn(() => Promise.resolve());
@@ -38,33 +36,29 @@ describe('<SignUpPage />', () => {
     expect(subject.find(Field).get(1).props.name).toEqual('password');
   });
 
-  it('should display a password confirmation input', () => {
-    expect(subject.find(Field).get(2).props.name).toEqual('passwordConfirmation');
-  });
-
   describe('submit with valid form', () => {
     beforeEach(() => {
       const user = {
         email: 'joe@joe.com',
-        password: 'password',
-        password_confirmation: 'password'
+        password: 'password'
       };
 
       userResponse = {
-        id: 1,
-        email: 'joe@joe.com',
-        uid: 'joe@joe.com',
-        provider: 'email'
+        user: {
+          id: 1,
+          email: 'joe@joe.com',
+          uid: 'joe@joe.com',
+          provider: 'email'
+        }
       };
 
       nock(process.env.API_URL)
-        .post('/users', { user })
+        .post('/users/sign_in', { user })
         .reply(200, userResponse);
 
       // load valid data to the form
-      email.simulate('change', { target: { name: 'email', value: 'joe@joe.com' } });
+      username.simulate('change', { target: { name: 'email', value: 'joe@joe.com' } });
       password.simulate('change', { target: { name: 'password', value: 'password' } });
-      passwordConfirmation.simulate('change', { target: { name: 'passwordConfirmation', value: 'password' } });
       form.simulate('submit');
     });
 
@@ -80,7 +74,7 @@ describe('<SignUpPage />', () => {
     it('should save the user data', (done) => {
       // wait for the call to save user
       sessionService.saveUser = jest.fn(() => {
-        expect(sessionService.saveUser).toHaveBeenCalledWith(userResponse);
+        expect(sessionService.saveUser).toHaveBeenCalledWith(userResponse.user);
         done();
         return Promise.resolve();
       });
@@ -90,64 +84,76 @@ describe('<SignUpPage />', () => {
   describe.skip('submit with invalid email', () => {
     beforeEach(() => {
       // load invalid data to the form
-      email.simulate('change', { target: { name: 'email', value: 'invalid email' } });
+      username.simulate('change', { target: { name: 'email', value: 'invalid email' } });
       password.simulate('change', { target: { name: 'password', value: 'password' } });
-      passwordConfirmation.simulate('change', { target: { name: 'passwordConfirmation', value: 'password' } });
       form.simulate('submit');
-      subject.update();
     });
 
     it('should display an error in the field', () => {
       const emailInput = subject.find('TextField').at(0);
-      expect(emailInput.props().error).toBeTruthy();
+      expect(emailInput.props().meta.error).toHaveLength(1);
     });
   });
 
   describe.skip('submit with blank email', () => {
     beforeEach(() => {
       // load invalid data to the form
-      email.simulate('change', { target: { name: 'email', value: '' } });
+      username.simulate('change', { target: { name: 'email', value: '' } });
       password.simulate('change', { target: { name: 'password', value: 'password' } });
-      passwordConfirmation.simulate('change', { target: { name: 'passwordConfirmation', value: 'password' } });
       form.simulate('submit');
-      subject.update();
     });
 
     it('should display an error in the field', () => {
       const emailInput = subject.find('TextField').at(0);
-      expect(emailInput.props().error).toBeTruthy();
+      expect(emailInput.props().meta.error).toHaveLength(1);
     });
   });
 
   describe.skip('submit with blank password', () => {
     beforeEach(() => {
       // load invalid data to the form
-      email.simulate('change', { target: { name: 'email', value: 'joe@joe.com' } });
-      password.simulate('blur');
-      passwordConfirmation.simulate('change', { target: { name: 'passwordConfirmation', value: 'password' } });
+      username.simulate('change', { target: { name: 'email', value: 'joe@joe.com' } });
+      password.simulate('change', { target: { name: 'password', value: '' } });
       form.simulate('submit');
-      subject.update();
     });
 
     it('should display an error in the field', () => {
-      subject.update();
       const passwordInput = subject.find('TextField').at(1);
-      expect(passwordInput.props().error).toBeTruthy();
+      expect(passwordInput.props().meta.error).toHaveLength(1);
     });
   });
 
-  describe.skip('submit with non matching passwords', () => {
-    beforeEach(() => {
+  describe.skip('submit with errors from server', () => {
+    beforeEach((done) => {
+      const user = {
+        email: 'joe@joe.com',
+        password: 'invalidPassword'
+      };
+      const serverError = { error: 'Invalid login credentials. Please try again.' };
+
+      nock(process.env.API_URL)
+        .post('/users/sign_in', { user })
+        .reply(401, serverError);
+
       // load invalid data to the form
-      email.simulate('change', { target: { name: 'email', value: 'joe@joe.com' } });
-      password.simulate('change', { target: { name: 'password', value: 'password' } });
-      passwordConfirmation.simulate('change', { target: { name: 'passwordConfirmation', value: 'password2' } });
+      username.simulate('change', { target: { name: 'email', value: 'joe@joe.com' } });
+      password.simulate('change', { target: { name: 'password', value: 'invalidPassword' } });
       form.simulate('submit');
+
+      // wait for the failure
+      const unsubscribe = store.subscribe(() => {
+        if (store.getState().getIn(['form', 'login', 'submitFailed'])) {
+          unsubscribe();
+          subject.update();
+          done();
+        }
+      });
     });
 
-    it('should display an error in the field', () => {
-      const passwordInput = subject.find('TextField').at(2);
-      expect(passwordInput.props().error).toBeTruthy();
+    it('should display the server error in the form', () => {
+      const generalError = subject.find('.loginForm__message');
+      const error = 'Invalid login credentials. Please try again.';
+      expect(generalError.text()).toEqual(error);
     });
   });
 });

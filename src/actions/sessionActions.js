@@ -6,7 +6,7 @@ export const login = user =>
   () =>
     sessionApi.login({ user }).then(({ user }) => {
       sessionService.saveUser(user);
-    }).catch((err) => { throw err });
+    }).catch((err) => { throw err; });
 export const logout = () =>
   () =>
     sessionApi.logout().then(() => {

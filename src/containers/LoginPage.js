@@ -3,10 +3,13 @@ import { bool, func } from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
+import LogoImage from 'components/common/LogoImage';
+import Paper from '@material-ui/core/Paper';
 
 import LoginForm from 'components/user/LoginForm';
 import { login } from 'actions/sessionActions';
 import routes from 'constants/routesPaths';
+import 'styles/containers/login.scss';
 
 class LoginPage extends PureComponent {
   static propTypes = {
@@ -22,13 +25,18 @@ class LoginPage extends PureComponent {
     }
 
     return (
-      <div>
-        <p><FormattedMessage id="login.title" /></p>
-        <LoginForm onSubmit={login} />
-        <Link to={routes.signUp}>
-          <FormattedMessage id="login.signup" />
-        </Link>
-      </div>
+      <main className="loginPage">
+        <Paper className="loginPage__paper">
+          <LogoImage />
+          <h1 className="loginPage__title">
+            <FormattedMessage id="login.title" />
+          </h1>
+          <LoginForm handleSubmit={login} />
+          <Link to="/sign-up/" className="loginPage__link">
+            <FormattedMessage id="login.signup" />
+          </Link>
+        </Paper>
+      </main>
     );
   }
 }
@@ -38,7 +46,7 @@ const mapState = state => ({
 });
 
 const mapDispatch = dispatch => ({
-  login: user => dispatch(login(user.toJS()))
+  login: user => dispatch(login(user))
 });
 
 export default connect(mapState, mapDispatch)(LoginPage);
