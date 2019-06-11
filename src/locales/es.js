@@ -11,15 +11,13 @@ export default {
   'login.form.email.invalid': 'Debe ingresar un email válido',
   'login.form.password.presence': 'Debe ingresar una contraseña para continuar',
 
-  'signup.title': 'REGISRARSE',
-  'signup.signin': 'Iniciar Sesión',
+  'signup.title': 'REGISTRARSE',
+  'signup.signin': ' Ya tienes una cuenta? Inicia Sesión',
   'signup.form.passconfirmation': 'Confirmación de Contraseña',
   'signup.form.confirmation.presence': 'Debe confirmar su contraseña para continuar',
   'signup.form.confirmation.equality': 'Su confirmación de contraseña debe ser igual a la contraseña',
 
   'logout.button': 'LOGOUT',
-
-  'home.welcome': 'Welcome to React Redux Base',
 
   // errors
   'email.presence': 'Debe ingresar un email para continuar',

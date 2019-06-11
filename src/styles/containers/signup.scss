@@ -1,0 +1,53 @@
+@import "./../components/common/colors.scss";
+
+.signupPage {
+  display: block; // Fix IE 11 issue.
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10vh;
+  width: 25vw;
+ -webkit-animation: fadein 1.5s;
+
+  @-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  &__avatar {
+    background-color: colors('primary') !important;
+  }
+
+  &__paper {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding: 10%;
+  };
+
+  &__title {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1.33
+  }
+
+  &__link {
+    display: block;
+    color: color('light-blue');
+    font-size: 0.8rem;
+    margin-top: 1.5vh;
+    text-decoration: none;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .signupPage {
+    width: 85vw;
+  }
+}
+
+@media screen and (min-width: 540px) and (max-width: 780px) {
+  .signupPage {
+    width: 60vw;
+  }
+}

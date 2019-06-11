@@ -1,0 +1,11 @@
+$colorPalette: (
+  'light-blue': #2196f3,
+  'primary': #2196f3,
+  'red': #f44336,
+  'white': #ffffff,
+  'yellow': #ffdc00
+);
+
+@function color($key: 'primary') {
+  @return map-get($colorPalette, $key);
+}

@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
 import { func, string, bool } from 'prop-types';
-import { Field, reduxForm } from 'redux-form/immutable';
 import {
-  injectIntl,
   intlShape,
   defineMessages,
   FormattedMessage
@@ -10,7 +8,6 @@ import {
 
 import Loading from 'components/common/Loading';
 import Input from 'components/common/Input';
-import { validations, login } from 'utils/constraints';
 
 const messages = defineMessages({
   email: { id: 'login.form.email' },
@@ -56,7 +53,4 @@ export class LoginForm extends PureComponent {
   }
 }
 
-export default reduxForm({
-  form: 'login',
-  validate: validations(login, { fullMessages: false })
-})(injectIntl(LoginForm));
+export default LoginForm;

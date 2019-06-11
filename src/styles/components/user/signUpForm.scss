@@ -1,0 +1,21 @@
+@import "./../common/colors.scss";
+
+.signupForm {
+  &__input {
+    display: block;
+    margin: 2vh;
+  }
+
+  &__message {
+    color: color('red');
+    font-size: 0.8rem;
+    text-align: center;
+  }
+
+  //TODO: check how to override material styles properly (without !important)
+  &__button {
+    background-color: color('primary') !important;
+    color: white !important;
+    margin-top: 10vh !important;
+  }
+}
